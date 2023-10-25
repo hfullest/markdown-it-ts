@@ -1,0 +1,27 @@
+{
+  "name": "markdown-it-ts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "linkify-it": "^4.0.1",
+    "mdurl": "^1.0.1",
+    "punycode": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/linkify-it": "^3.0.4",
+    "@types/mdurl": "^1.0.4",
+    "@types/node": "^20.8.8",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
+}
