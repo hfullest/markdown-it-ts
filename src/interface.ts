@@ -11,14 +11,14 @@ export enum Nesting {
 }
 
 
-export type CoreRule<R = never> =
+export type CoreRuleType<T = never> =
   | "normalize"
   | "block"
   | "inline"
   | "text_join"
-  | R;
+  | T;
 
-export type BlockRule<R = never> =
+export type BlockRuleType<T = never> =
   | "blockquote"
   | "code"
   | "fence"
@@ -29,9 +29,9 @@ export type BlockRule<R = never> =
   | "list"
   | "reference"
   | "paragraph"
-  | R;
+  | T;
 
-export type InlineRule<R = never> =
+export type InlineRuleType<T = never> =
   | "autolink"
   | "backticks"
   | "emphasis"
@@ -42,15 +42,24 @@ export type InlineRule<R = never> =
   | "link"
   | "newline"
   | "text"
-  | R;
+  | T;
 
-export type InlineRule2<R = never> =
+export type InlineRule2Type<T = never> =
   | "balance_pairs"
   | "emphasis"
   | "fragments_join"
-  | R;
+  | T;
 
-export type Rule<R = never> = CoreRule | BlockRule | InlineRule | R;
+export type RuleType<T = never> = CoreRuleType | BlockRuleType | InlineRuleType | T;
+
+export type RuleCallback = () => void;
+
+export interface Rule {
+  name: string;
+  enabled: boolean;
+  fn: RuleCallback;
+  alt: string[];
+}
 
 export interface Options {
   html: boolean; // Enable HTML tags in source
@@ -82,9 +91,9 @@ export interface Options {
 }
 
 export interface Components {
-  core: { rules: CoreRule[] };
-  block: { rules: BlockRule[] };
-  inline: { rules: InlineRule[]; rules2?: InlineRule2 };
+  core: { rules: CoreRuleType[] };
+  block: { rules: BlockRuleType[] };
+  inline: { rules: InlineRuleType[]; rules2?: InlineRule2Type };
 }
 
 export interface Config {

@@ -1,4 +1,4 @@
-import { Ruler } from "../rules";
+import { Ruler } from "../rules/ruler";
 import { StateCore } from "../state/core";
 
 export class ParserCore {

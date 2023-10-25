@@ -1,4 +1,4 @@
-import { Ruler } from "../rules";
+import { Ruler } from "../rules/ruler";
 import { StateInline } from "../state/inline";
 
 export class ParserInline {

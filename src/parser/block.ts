@@ -1,4 +1,4 @@
-import { Ruler } from "../rules";
+import { Ruler } from "../rules/ruler";
 import { StateBlock } from "../state/block";
 
 export class ParserBlock {
