@@ -4,6 +4,13 @@ export type PresetNameType = "default" | "commonmark" | "zero";
 
 export type Highlighter = (str: string, lang: string) => string;
 
+export enum Nesting {
+  opening = 1,
+  self_closing = 0,
+  closing = -1,
+}
+
+
 export type CoreRule<R = never> =
   | "normalize"
   | "block"
@@ -90,5 +97,5 @@ export interface Plugin {
   (md: MarkdownIt, params: any): void;
 }
 
-export interface EnvSandbox {}
+export interface EnvSandbox { }
 
