@@ -1,6 +1,10 @@
-import { Rules } from "../rules";
+import { Ruler } from "../rules";
+import { StateInline } from "../state/inline";
 
 export class ParserInline {
-  rules = new Rules();
-  rules2 = new Rules();
+  ruler = new Ruler();
+
+  ruler2 = new Ruler();
+
+  State = StateInline;
 }

@@ -1,4 +1,10 @@
-import { Components, Config, Options, PresetNameType } from "./interface";
+import {
+  Config,
+  EnvSandbox,
+  Options,
+  Plugin,
+  PresetNameType,
+} from "./interface";
 import { ParserBlock } from "./parser/block";
 import { ParserCore } from "./parser/core";
 import { ParserInline } from "./parser/inline";
@@ -73,19 +79,102 @@ export class MarkdownIt {
     }
 
     if (components) {
-      Object.entries(components).forEach(
-        ([name, { rules, rules2 }]: [string, Components[keyof Components]]) => {
-          if (rules) this[name].ruler.enableOnly(rules);
-          if (rules2) this[name].ruler.enableOnly(rules2);
-        }
-      );
+      Object.entries(components).forEach(([name, { rules, rules2 }]) => {
+        if (rules) this[name].ruler.enableOnly(rules);
+        if (rules2) this[name].ruler.enableOnly(rules2);
+      });
     }
     return this;
+  }
+
+  #parse(src: string, env: Record<string, any>) {
+    if (typeof src !== "string") {
+      throw new Error("Input data should be a String");
+    }
+
+    const state = new this.core.State(src, this, env);
+
+    this.core.process(state);
+
+    return state.tokens;
   }
 
   /** 设置配置 */
   set(options: Options) {
     this.options = Object.assign(this.options, options);
     return this;
+  }
+
+  use(plugin: Plugin, ...params: any[]) {
+    if (typeof plugin === "function") plugin(this, params);
+    return this;
+  }
+
+  enable(list: string | string[], ignoreInvalid: boolean) {
+    let result: string[] = [];
+
+    if (!Array.isArray(list)) {
+      list = [list];
+    }
+
+    ["core", "block", "inline"].forEach((chain) => {
+      result = result.concat(this[chain].ruler.enable(list, true));
+    });
+
+    result = result.concat(this.inline.ruler2.enable(list, true));
+
+    const missed = list.filter(function (name) {
+      return result.indexOf(name) < 0;
+    });
+
+    if (missed.length && !ignoreInvalid) {
+      throw new Error(
+        "MarkdownIt. Failed to enable unknown rule(s): " + missed
+      );
+    }
+
+    return this;
+  }
+
+  disable(list: string | string[], ignoreInvalid: boolean) {
+    let result: string[] = [];
+
+    if (!Array.isArray(list)) {
+      list = [list];
+    }
+
+    ["core", "block", "inline"].forEach((chain) => {
+      result = result.concat(this[chain].ruler.disable(list, true));
+    });
+
+    result = result.concat(this.inline.ruler2.disable(list, true));
+
+    var missed = list.filter(function (name) {
+      return result.indexOf(name) < 0;
+    });
+
+    if (missed.length && !ignoreInvalid) {
+      throw new Error(
+        "MarkdownIt. Failed to disable unknown rule(s): " + missed
+      );
+    }
+    return this;
+  }
+
+  #parseInline(src: string, env: EnvSandbox) {
+    const state = new this.core.State(src, this, env);
+    state.inlineMode = true;
+    this.core.process(state);
+    return state.tokens;
+  }
+
+  renderInline(src: string, env: EnvSandbox) {
+    env = env ?? {};
+    return this.renderer.render(this.#parseInline(src, env), this.options, env);
+  }
+
+  render(src: string, env: EnvSandbox) {
+    env = env ?? {};
+    return this.renderer.render(this.#parse(src, env), this.options, env);
   }
 }

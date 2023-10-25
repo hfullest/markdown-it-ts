@@ -1,6 +1,14 @@
-import { Rules } from "../rules";
+import { Ruler } from "../rules";
+import { StateCore } from "../state/core";
 
 export class ParserCore {
-  rules = new Rules();
-  rules2 = new Rules();
+  ruler = new Ruler();
+
+  ruler2 = new Ruler();
+
+  State = StateCore;
+
+  process(state: StateCore) {
+    throw new Error("Method not implemented.");
+  }
 }

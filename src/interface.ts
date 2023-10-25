@@ -1,10 +1,49 @@
-import { ParserBlock } from "./parser/block";
-import { ParserCore } from "./parser/core";
-import { ParserInline } from "./parser/inline";
+import { MarkdownIt } from "./markdown-it";
 
 export type PresetNameType = "default" | "commonmark" | "zero";
 
 export type Highlighter = (str: string, lang: string) => string;
+
+export type CoreRule<R = never> =
+  | "normalize"
+  | "block"
+  | "inline"
+  | "text_join"
+  | R;
+
+export type BlockRule<R = never> =
+  | "blockquote"
+  | "code"
+  | "fence"
+  | "heading"
+  | "hr"
+  | "html_block"
+  | "lheading"
+  | "list"
+  | "reference"
+  | "paragraph"
+  | R;
+
+export type InlineRule<R = never> =
+  | "autolink"
+  | "backticks"
+  | "emphasis"
+  | "entity"
+  | "escape"
+  | "html_inline"
+  | "image"
+  | "link"
+  | "newline"
+  | "text"
+  | R;
+
+export type InlineRule2<R = never> =
+  | "balance_pairs"
+  | "emphasis"
+  | "fragments_join"
+  | R;
+
+export type Rule<R = never> = CoreRule | BlockRule | InlineRule | R;
 
 export interface Options {
   html: boolean; // Enable HTML tags in source
@@ -36,9 +75,9 @@ export interface Options {
 }
 
 export interface Components {
-  core: ParserCore;
-  block: ParserBlock;
-  inline: ParserInline;
+  core: { rules: CoreRule[] };
+  block: { rules: BlockRule[] };
+  inline: { rules: InlineRule[]; rules2?: InlineRule2 };
 }
 
 export interface Config {
@@ -46,3 +85,10 @@ export interface Config {
 
   components?: Components;
 }
+
+export interface Plugin {
+  (md: MarkdownIt, params: any): void;
+}
+
+export interface EnvSandbox {}
+

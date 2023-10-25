@@ -1,6 +1,10 @@
-import { Rules } from "../rules";
+import { Ruler } from "../rules";
+import { StateBlock } from "../state/block";
 
 export class ParserBlock {
-  rules = new Rules();
-  rules2 = new Rules();
+  ruler = new Ruler();
+
+  ruler2 = new Ruler();
+
+  State = StateBlock;
 }
