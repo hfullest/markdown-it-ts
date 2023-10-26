@@ -1,6 +1,7 @@
-import { MarkdownIt } from "./markdown-it";
+import { Token } from './basic/token';
+import { MarkdownIt } from './markdown-it';
 
-export type PresetNameType = "default" | "commonmark" | "zero";
+export type PresetNameType = 'default' | 'commonmark' | 'zero';
 
 export type Highlighter = (str: string, lang: string) => string;
 
@@ -10,49 +11,45 @@ export enum Nesting {
   closing = -1,
 }
 
-
-export type CoreRuleType<T = never> =
-  | "normalize"
-  | "block"
-  | "inline"
-  | "text_join"
-  | T;
+export type CoreRuleType<T = never> = 'normalize' | 'block' | 'inline' | 'text_join' | T;
 
 export type BlockRuleType<T = never> =
-  | "blockquote"
-  | "code"
-  | "fence"
-  | "heading"
-  | "hr"
-  | "html_block"
-  | "lheading"
-  | "list"
-  | "reference"
-  | "paragraph"
+  | 'blockquote'
+  | 'code'
+  | 'fence'
+  | 'heading'
+  | 'hr'
+  | 'html_block'
+  | 'lheading'
+  | 'list'
+  | 'reference'
+  | 'paragraph'
   | T;
 
 export type InlineRuleType<T = never> =
-  | "autolink"
-  | "backticks"
-  | "emphasis"
-  | "entity"
-  | "escape"
-  | "html_inline"
-  | "image"
-  | "link"
-  | "newline"
-  | "text"
+  | 'autolink'
+  | 'backticks'
+  | 'emphasis'
+  | 'entity'
+  | 'escape'
+  | 'html_inline'
+  | 'image'
+  | 'link'
+  | 'newline'
+  | 'text'
   | T;
 
-export type InlineRule2Type<T = never> =
-  | "balance_pairs"
-  | "emphasis"
-  | "fragments_join"
-  | T;
+export type InlineRule2Type<T = never> = 'balance_pairs' | 'emphasis' | 'fragments_join' | T;
 
 export type RuleType<T = never> = CoreRuleType | BlockRuleType | InlineRuleType | T;
 
-export type RuleCallback = () => void;
+export type RuleCallback<This = any> = (
+  tokens: Token[],
+  idx: number,
+  options: Options,
+  env: EnvSandbox,
+  slf: ThisParameterType<This>
+) => string;
 
 export interface Rule {
   name: string;
@@ -106,5 +103,4 @@ export interface Plugin {
   (md: MarkdownIt, params: any): void;
 }
 
-export interface EnvSandbox { }
-
+export interface EnvSandbox {}
