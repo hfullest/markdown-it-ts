@@ -13,6 +13,10 @@ export class Ruler {
    */
   #cache: Map<string, RuleCallback[]> = new Map();
 
+  constructor(rules?: Rule[]) {
+    this.#rules.push(...(rules ?? []));
+  }
+
   /** 构建规则查找缓存 */
   #compile() {
     const chains = new Set(['']);
