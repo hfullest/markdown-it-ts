@@ -1,5 +1,6 @@
 import { Token } from './basic/token';
 import { MarkdownIt } from './markdown-it';
+import { StateBlock } from './state/block';
 
 export type PresetNameType = 'default' | 'commonmark' | 'zero';
 
@@ -11,51 +12,98 @@ export enum Nesting {
   closing = -1,
 }
 
-export type CoreRuleType<T = never> = 'normalize' | 'block' | 'inline' | 'text_join' | T;
+export namespace Rule {
+  export type CoreRuleType<T = never> = 'normalize' | 'block' | 'inline' | 'text_join' | T;
 
-export type BlockRuleType<T = never> =
-  | 'blockquote'
-  | 'code'
-  | 'fence'
-  | 'heading'
-  | 'hr'
-  | 'html_block'
-  | 'lheading'
-  | 'list'
-  | 'reference'
-  | 'paragraph'
-  | T;
+  export type BlockRuleType<T = never> =
+    | 'blockquote'
+    | 'code'
+    | 'fence'
+    | 'heading'
+    | 'hr'
+    | 'html_block'
+    | 'lheading'
+    | 'list'
+    | 'reference'
+    | 'paragraph'
+    | T;
 
-export type InlineRuleType<T = never> =
-  | 'autolink'
-  | 'backticks'
-  | 'emphasis'
-  | 'entity'
-  | 'escape'
-  | 'html_inline'
-  | 'image'
-  | 'link'
-  | 'newline'
-  | 'text'
-  | T;
+  export type InlineRuleType<T = never> =
+    | 'autolink'
+    | 'backticks'
+    | 'emphasis'
+    | 'entity'
+    | 'escape'
+    | 'html_inline'
+    | 'image'
+    | 'link'
+    | 'newline'
+    | 'text'
+    | T;
 
-export type InlineRule2Type<T = never> = 'balance_pairs' | 'emphasis' | 'fragments_join' | T;
+  export type InlineRule2Type<T = never> = 'balance_pairs' | 'emphasis' | 'fragments_join' | T;
 
-export type RuleType<T = never> = CoreRuleType | BlockRuleType | InlineRuleType | T;
+  export type RuleType<T = never> = CoreRuleType | BlockRuleType | InlineRuleType | T;
 
-export type RuleCallback<This = any> = (
-  tokens: Token[],
-  idx: number,
-  options: Options,
-  env: EnvSandbox,
-  slf: ThisParameterType<This>
-) => string;
+  export interface BasicRule<F extends Function = Function> {
+    name: string;
+    enabled: boolean;
+    fn: F;
+    alt: string[];
+  }
 
-export interface Rule {
-  name: string;
-  enabled: boolean;
-  fn: RuleCallback;
-  alt: string[];
+  export interface RenderRule extends BasicRule {
+    fn: <This = any>(
+      tokens: Token[],
+      idx: number,
+      options: Options,
+      env: EnvSandbox,
+      slf: ThisParameterType<This>
+    ) => string;
+  }
+
+  export interface BlockRule extends BasicRule {
+    name:
+      | 'table'
+      | 'code'
+      | 'fence'
+      | 'blockquote'
+      | 'hr'
+      | 'list'
+      | 'reference'
+      | 'html_block'
+      | 'heading'
+      | 'lheading'
+      | 'paragraph';
+    fn: (state: StateBlock, startLine: number, endLine: number, silent: boolean) => boolean;
+  }
+
+  export interface CoreRule extends BasicRule {
+    name: 'normalize' | 'block' | 'inline' | 'linkify' | 'replacements' | 'smartquotes' | 'text_join';
+    fn: (state: StateBlock) => void;
+  }
+
+  export interface InlineRule extends BasicRule {
+    name:
+      | 'text'
+      | 'linkify'
+      | 'newline'
+      | 'escape'
+      | 'backticks'
+      | 'strikethrough'
+      | 'emphasis'
+      | 'link'
+      | 'image'
+      | 'autolink'
+      | 'html_inline'
+      | 'entity';
+    fn: (state: StateBlock, silent: boolean) => boolean;
+  }
+
+  export interface InlineRule2 extends BasicRule {
+    name: 'balance_pairs' | 'strikethrough' | 'emphasis' | 'fragments_join';
+    fn: (state: StateBlock, silent: boolean) => boolean;
+  }
 }
 
 export interface Options {
@@ -88,9 +136,9 @@ export interface Options {
 }
 
 export interface Components {
-  core: { rules: CoreRuleType[] };
-  block: { rules: BlockRuleType[] };
-  inline: { rules: InlineRuleType[]; rules2?: InlineRule2Type };
+  core: { rules: Rule.CoreRuleType[] };
+  block: { rules: Rule.BlockRuleType[] };
+  inline: { rules: Rule.InlineRuleType[]; rules2?: Rule.InlineRule2Type };
 }
 
 export interface Config {

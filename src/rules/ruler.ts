@@ -1,8 +1,8 @@
-import { Rule, RuleCallback } from '../interface';
+import { Rule } from '../interface';
 
-export class Ruler {
+export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
   /** 添加的规则列表 */
-  #rules: Rule[] = [];
+  #rules: R[] = [];
 
   /**
    * Cached rule chains.
@@ -11,9 +11,9 @@ export class Ruler {
    *
    *  Second level - diginal anchor for fast filtering by charcodes.
    */
-  #cache: Map<string, RuleCallback[]> = new Map();
+  #cache: Map<string, Function[]> = new Map();
 
-  constructor(rules?: Rule[]) {
+  constructor(rules?: R[]) {
     this.#rules.push(...(rules ?? []));
   }
 
@@ -50,7 +50,7 @@ export class Ruler {
    * });
    * ```
    */
-  at(beforeName: string, fn: RuleCallback, options: { alt?: Rule['alt'] } = {}) {
+  at(beforeName: string, fn: R['fn'], options: { alt?: R['alt'] } = {}) {
     const index = this.#rules.findIndex((rule) => rule.name === beforeName);
     if (index < 0) throw new Error('Parser rule not found: ' + beforeName);
     this.#rules[index].fn = fn;
@@ -82,11 +82,11 @@ export class Ruler {
    * });
    * ```
    **/
-  before(beforeName: string, ruleName: string, fn: RuleCallback, options: { alt?: Rule['alt'] } = {}) {
+  before(beforeName: string, ruleName: string, fn: R['fn'], options: { alt?: R['alt'] } = {}) {
     const index = this.#rules.findIndex((rule) => rule.name === beforeName);
     if (index < 0) throw new Error('Parser rule not found: ' + beforeName);
-    const rule: Rule = { name: ruleName, enabled: true, fn, alt: options?.alt ?? [] };
-    this.#rules.splice(index, 0, rule);
+    const rule = { name: ruleName, enabled: true, fn, alt: options?.alt ?? [] };
+    this.#rules.splice(index, 0, rule as R);
     this.#cache.clear();
   }
 
@@ -114,11 +114,11 @@ export class Ruler {
    * });
    * ```
    **/
-  after(afterName: string, ruleName: string, fn: RuleCallback, options: { alt?: Rule['alt'] } = {}) {
+  after(afterName: string, ruleName: string, fn: R['fn'], options: { alt?: R['alt'] } = {}) {
     const index = this.#rules.findIndex((rule) => rule.name === afterName);
     if (index < 0) throw new Error('Parser rule not found: ' + afterName);
-    const rule: Rule = { name: ruleName, enabled: true, fn, alt: options?.alt ?? [] };
-    this.#rules.splice(index + 1, 0, rule);
+    const rule = { name: ruleName, enabled: true, fn, alt: options?.alt ?? [] };
+    this.#rules.splice(index + 1, 0, rule as R);
     this.#cache.clear();
   }
 
@@ -145,8 +145,8 @@ export class Ruler {
    * });
    * ```
    **/
-  push(ruleName: string, fn: RuleCallback, options: { alt?: Rule['alt'] } = {}) {
-    this.#rules.push({ name: ruleName, enabled: true, fn, alt: options?.alt ?? [] });
+  push(ruleName: string, fn: R['fn'], options: { alt?: R['alt'] } = {}) {
+    this.#rules.push({ name: ruleName, enabled: true, fn, alt: options?.alt ?? [] } as R);
     this.#cache.clear();
   }
 
