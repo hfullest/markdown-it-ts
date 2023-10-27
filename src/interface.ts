@@ -151,4 +151,6 @@ export interface Plugin {
   (md: MarkdownIt, params: any): void;
 }
 
-export interface EnvSandbox {}
+export interface EnvSandbox {
+  references: Record<string, { title: string; href: string }>;
+}

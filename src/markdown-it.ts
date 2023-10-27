@@ -1,18 +1,12 @@
-import {
-  Config,
-  EnvSandbox,
-  Options,
-  Plugin,
-  PresetNameType,
-} from "./interface";
-import { ParserBlock } from "./parser/block";
-import { ParserCore } from "./parser/core";
-import { ParserInline } from "./parser/inline";
-import { Renderer } from "./renderer";
-import LinkifyIt from "linkify-it";
-import { normalizeLink, normalizeLinkText, utils, validateLink } from "./utils";
-import * as helpers from "./helpers";
-import presetsConfig from "./presets";
+import { Config, EnvSandbox, Options, Plugin, PresetNameType } from './interface';
+import { ParserBlock } from './parser/block';
+import { ParserCore } from './parser/core';
+import { ParserInline } from './parser/inline';
+import { Renderer } from './renderer';
+import LinkifyIt from 'linkify-it';
+import { normalizeLink, normalizeLinkText, utils, validateLink } from './utils';
+import * as helpers from './helpers';
+import presetsConfig from './presets';
 
 export class MarkdownIt {
   core = new ParserCore();
@@ -33,7 +27,7 @@ export class MarkdownIt {
 
   helpers = helpers;
 
-  options: Options = presetsConfig["default"]["options"]!;
+  options: Options = presetsConfig['default']['options']!;
 
   /** 链接检验方法 */
   validateLink = validateLink;
@@ -42,13 +36,12 @@ export class MarkdownIt {
 
   normalizeLinkText = normalizeLinkText;
 
-  constructor(presetName: PresetNameType, options: Options) {
-    if (!(this instanceof MarkdownIt))
-      return new MarkdownIt(presetName, options);
+  constructor(presetName: PresetNameType = 'default', options?: Options) {
+    if (!(this instanceof MarkdownIt)) return new MarkdownIt(presetName, options);
     if (!options) {
-      if (typeof presetName !== "string") {
-        options = presetName ?? {};
-        presetName = "default";
+      if (typeof presetName !== 'string') {
+        options = presetName ?? ({} as Options);
+        presetName = 'default';
       }
     } else {
       this.options = options;
@@ -60,12 +53,10 @@ export class MarkdownIt {
   #configure(presetName: PresetNameType) {
     let preset: Config | null = null;
 
-    if (typeof presetName === "string") {
+    if (typeof presetName === 'string') {
       preset = presetsConfig[presetName];
       if (!presetName) {
-        throw new Error(
-          'Wrong `markdown-it` preset "' + presetName + '", check name'
-        );
+        throw new Error('Wrong `markdown-it` preset "' + presetName + '", check name');
       }
     }
 
@@ -88,8 +79,8 @@ export class MarkdownIt {
   }
 
   #parse(src: string, env: Record<string, any>) {
-    if (typeof src !== "string") {
-      throw new Error("Input data should be a String");
+    if (typeof src !== 'string') {
+      throw new Error('Input data should be a String');
     }
 
     const state = new this.core.State(src, this, env);
@@ -106,7 +97,7 @@ export class MarkdownIt {
   }
 
   use(plugin: Plugin, ...params: any[]) {
-    if (typeof plugin === "function") plugin(this, params);
+    if (typeof plugin === 'function') plugin(this, params);
     return this;
   }
 
@@ -117,7 +108,7 @@ export class MarkdownIt {
       list = [list];
     }
 
-    ["core", "block", "inline"].forEach((chain) => {
+    ['core', 'block', 'inline'].forEach((chain) => {
       result = result.concat(this[chain].ruler.enable(list, true));
     });
 
@@ -128,9 +119,7 @@ export class MarkdownIt {
     });
 
     if (missed.length && !ignoreInvalid) {
-      throw new Error(
-        "MarkdownIt. Failed to enable unknown rule(s): " + missed
-      );
+      throw new Error('MarkdownIt. Failed to enable unknown rule(s): ' + missed);
     }
 
     return this;
@@ -143,7 +132,7 @@ export class MarkdownIt {
       list = [list];
     }
 
-    ["core", "block", "inline"].forEach((chain) => {
+    ['core', 'block', 'inline'].forEach((chain) => {
       result = result.concat(this[chain].ruler.disable(list, true));
     });
 
@@ -154,9 +143,7 @@ export class MarkdownIt {
     });
 
     if (missed.length && !ignoreInvalid) {
-      throw new Error(
-        "MarkdownIt. Failed to disable unknown rule(s): " + missed
-      );
+      throw new Error('MarkdownIt. Failed to disable unknown rule(s): ' + missed);
     }
     return this;
   }
@@ -173,7 +160,7 @@ export class MarkdownIt {
     return this.renderer.render(this.#parseInline(src, env), this.options, env);
   }
 
-  render(src: string, env: EnvSandbox) {
+  render(src: string, env?: EnvSandbox) {
     env = env ?? {};
     return this.renderer.render(this.#parse(src, env), this.options, env);
   }

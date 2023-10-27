@@ -42,7 +42,7 @@ export class StateBlock {
    * can be 'blockquote', 'list', 'root', 'paragraph' or 'reference'
    * used in lists to determine if they interrupt a paragraph
    *  */
-  parentType: 'blockquote' | 'list' | 'root' | 'paragraph' | 'reference' = 'root';
+  parentType: 'blockquote' | 'list' | 'root' | 'paragraph' | 'reference' | 'table' = 'root';
 
   level = 0;
 

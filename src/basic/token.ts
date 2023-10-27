@@ -5,7 +5,43 @@ export namespace Token {
 
   export type Attr<K extends string = string, V = any> = [K, V];
 
-  export type Type<T extends string = never> = 'text' | 'inline' | 'image' | 'softbreak' | T;
+  export type TableType =
+    | 'table_open'
+    | 'thead_open'
+    | 'tr_open'
+    | 'th_open'
+    | 'th_close'
+    | 'tr_close'
+    | 'thead_close'
+    | 'tbody_open'
+    | 'td_open'
+    | 'td_close'
+    | 'tbody_close'
+    | 'table_close';
+
+  export type ListType =
+    | 'paragraph_open'
+    | 'ordered_list_open'
+    | 'bullet_list_open'
+    | 'list_item_open'
+    | 'list_item_close'
+    | 'ordered_list_close'
+    | 'bullet_list_close'
+    | 'paragraph_close';
+
+  export type BlockType =
+    | TableType
+    | ListType
+    | 'code_block'
+    | 'fence'
+    | 'blockquote_open'
+    | 'blockquote_close'
+    | 'heading_open'
+    | 'heading_close'
+    | 'hr'
+    | 'html_block';
+
+  export type Type<T extends string = never> = BlockType | 'text' | 'inline' | 'image' | 'softbreak' | T;
 }
 
 export class Token {
