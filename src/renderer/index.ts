@@ -10,12 +10,12 @@ export class Renderer {
    * ##### Example
    *
    * ```javascript
-   * var md = require('markdown-it')();
+   * const md = require('markdown-it')();
    *
    * md.renderer.rules.strong_open  = function () { return '<b>'; };
    * md.renderer.rules.strong_close = function () { return '</b>'; };
    *
-   * var result = md.renderInline(...);
+   * const result = md.renderInline(...);
    * ```
    *
    * Each rule is called as independent static function with fixed signature:

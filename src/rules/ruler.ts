@@ -22,7 +22,7 @@ export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
     const chains = new Set(['']);
     this.#rules.forEach((rule) => {
       if (!rule.enabled) return;
-      rule.alt.forEach((altName) => {
+      rule.alt?.forEach((altName) => {
         if (!chains.has(altName)) chains.add(altName);
       });
     });
@@ -31,7 +31,7 @@ export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
       const chainFns = this.#cache.get(chain) ?? [];
       this.#rules.forEach((rule) => {
         if (rule.enabled) return;
-        if (chain && rule.alt.indexOf(chain) < 0) return;
+        if (chain && rule.alt?.indexOf(chain)! < 0) return;
         chainFns.push(rule.fn);
       });
       this.#cache.set(chain, chainFns);
@@ -43,7 +43,7 @@ export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
    *
    * @example
    * ```javascript
-   * var md = require('markdown-it')();
+   * const md = require('markdown-it')();
    *
    * md.core.ruler.at('replacements', function replace(state) {
    *   //...
@@ -75,7 +75,7 @@ export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
    * ##### Example
    *
    * ```javascript
-   * var md = require('markdown-it')();
+   * const md = require('markdown-it')();
    *
    * md.block.ruler.before('paragraph', 'my_rule', function replace(state) {
    *   //...
@@ -107,7 +107,7 @@ export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
    * ##### Example
    *
    * ```javascript
-   * var md = require('markdown-it')();
+   * const md = require('markdown-it')();
    *
    * md.inline.ruler.after('text', 'my_rule', function replace(state) {
    *   //...
@@ -138,7 +138,7 @@ export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
    * ##### Example
    *
    * ```javascript
-   * var md = require('markdown-it')();
+   * const md = require('markdown-it')();
    *
    * md.core.ruler.push('my_rule', function replace(state) {
    *   //...

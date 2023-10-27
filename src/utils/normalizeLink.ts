@@ -4,7 +4,7 @@ import punycode from "punycode";
 const RECODE_HOSTNAME_FOR = ["http:", "https:", "mailto:"];
 
 export function normalizeLink(url: string) {
-  var parsed = mdurl.parse(url, true);
+  const parsed = mdurl.parse(url, true);
 
   if (parsed.hostname) {
     // Encode hostnames in urls like:

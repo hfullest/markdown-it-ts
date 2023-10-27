@@ -49,7 +49,7 @@ export namespace Rule {
     name: string;
     enabled: boolean;
     fn: F;
-    alt: string[];
+    alt?: string[];
   }
 
   export interface RenderRule extends BasicRule {

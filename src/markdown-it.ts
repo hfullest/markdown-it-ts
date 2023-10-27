@@ -149,7 +149,7 @@ export class MarkdownIt {
 
     result = result.concat(this.inline.ruler2.disable(list, true));
 
-    var missed = list.filter(function (name) {
+    const missed = list.filter(function (name) {
       return result.indexOf(name) < 0;
     });
 
