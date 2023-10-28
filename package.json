@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "module":"index.js",
+  "module": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "entities": "~3.0.1",
     "linkify-it": "^4.0.1",
     "mdurl": "^1.0.1",
     "punycode": "^2.3.0"
