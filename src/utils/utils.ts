@@ -1,5 +1,8 @@
+import entities from '../common/entities';
+import UNICODE_PUNCT_RE from 'uc.micro/categories/P/regex';
+
 export function isString(obj: any) {
-  return typeof obj === "string";
+  return typeof obj === 'string';
 }
 
 export function has(object: object, key: string) {
@@ -11,11 +14,7 @@ export const assign = Object.assign;
 // Remove element from array and put another array at those position.
 // Useful for some operations with tokens
 export function arrayReplaceAt(src: any[], pos: number, newElements: any) {
-  return [].concat(
-    src.slice(0, pos) as any,
-    newElements,
-    src.slice(pos + 1) as any
-  );
+  return [].concat(src.slice(0, pos) as any, newElements, src.slice(pos + 1) as any);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,14 +66,9 @@ export function fromCodePoint(c: number) {
 
 const UNESCAPE_MD_RE = /\\([!"#$%&'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])/g;
 const ENTITY_RE = /&([a-z#][a-z0-9]{1,31});/gi;
-const UNESCAPE_ALL_RE = new RegExp(
-  UNESCAPE_MD_RE.source + "|" + ENTITY_RE.source,
-  "gi"
-);
+const UNESCAPE_ALL_RE = new RegExp(UNESCAPE_MD_RE.source + '|' + ENTITY_RE.source, 'gi');
 
 const DIGITAL_ENTITY_TEST_RE = /^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))$/i;
-
-const entities = require("./entities");
 
 function replaceEntityPattern(match: any, name: any) {
   let code;
@@ -83,14 +77,8 @@ function replaceEntityPattern(match: any, name: any) {
     return entities[name];
   }
 
-  if (
-    name.charCodeAt(0) === 0x23 /* # */ &&
-    DIGITAL_ENTITY_TEST_RE.test(name)
-  ) {
-    code =
-      name[1].toLowerCase() === "x"
-        ? parseInt(name.slice(2), 16)
-        : parseInt(name.slice(1), 10);
+  if (name.charCodeAt(0) === 0x23 /* # */ && DIGITAL_ENTITY_TEST_RE.test(name)) {
+    code = name[1].toLowerCase() === 'x' ? parseInt(name.slice(2), 16) : parseInt(name.slice(1), 10);
 
     if (isValidEntityCode(code)) {
       return fromCodePoint(code);
@@ -107,14 +95,14 @@ function replaceEntityPattern(match: any, name: any) {
 }*/
 
 export function unescapeMd(str) {
-  if (str.indexOf("\\") < 0) {
+  if (str.indexOf('\\') < 0) {
     return str;
   }
-  return str.replace(UNESCAPE_MD_RE, "$1");
+  return str.replace(UNESCAPE_MD_RE, '$1');
 }
 
 export function unescapeAll(str) {
-  if (str.indexOf("\\") < 0 && str.indexOf("&") < 0) {
+  if (str.indexOf('\\') < 0 && str.indexOf('&') < 0) {
     return str;
   }
 
@@ -131,13 +119,13 @@ export function unescapeAll(str) {
 const HTML_ESCAPE_TEST_RE = /[&<>"]/;
 const HTML_ESCAPE_REPLACE_RE = /[&<>"]/g;
 const HTML_REPLACEMENTS = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
 };
 
- export function replaceUnsafeChar(ch) {
+export function replaceUnsafeChar(ch) {
   return HTML_REPLACEMENTS[ch];
 }
 
@@ -153,7 +141,7 @@ export function escapeHtml(str) {
 const REGEXP_ESCAPE_RE = /[.?*+^$[\]\\(){}|-]/g;
 
 export function escapeRE(str) {
-  return str.replace(REGEXP_ESCAPE_RE, "\\$&");
+  return str.replace(REGEXP_ESCAPE_RE, '\\$&');
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -190,9 +178,6 @@ export function isWhiteSpace(code) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-/*eslint-disable max-len*/
-const UNICODE_PUNCT_RE = require("uc.micro/categories/P/regex");
 
 // Currently without astral characters support.
 export function isPunctChar(ch) {
@@ -251,7 +236,7 @@ export function isMdAsciiPunct(ch) {
 export function normalizeReference(str) {
   // Trim and collapse whitespace
   //
-  str = str.trim().replace(/\s+/g, " ");
+  str = str.trim().replace(/\s+/g, ' ');
 
   // In node v10 'ẞ'.toLowerCase() === 'Ṿ', which is presumed to be a bug
   // fixed in v12 (couldn't find any details).
@@ -259,8 +244,8 @@ export function normalizeReference(str) {
   // So treat this one as a special case
   // (remove this when node v10 is no longer supported).
   //
-  if ("ẞ".toLowerCase() === "Ṿ") {
-    str = str.replace(/ẞ/g, "ß");
+  if ('ẞ'.toLowerCase() === 'Ṿ') {
+    str = str.replace(/ẞ/g, 'ß');
   }
 
   // .toLowerCase().toUpperCase() should get rid of all differences

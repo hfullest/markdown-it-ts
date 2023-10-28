@@ -30,7 +30,7 @@ export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
     chains.forEach((chain) => {
       const chainFns = this.cache.get(chain) ?? [];
       this.rules.forEach((rule) => {
-        if (rule.enabled) return;
+        if (!rule.enabled) return;
         if (chain && rule.alt?.indexOf(chain)! < 0) return;
         chainFns.push(rule.fn);
       });

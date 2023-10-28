@@ -17,6 +17,9 @@ dependencies:
   punycode:
     specifier: ^2.3.0
     version: 2.3.0
+  uc.micro:
+    specifier: ^1.0.5
+    version: 1.0.6
 
 devDependencies:
   '@babel/core':
@@ -77,7 +80,7 @@ devDependencies:
     specifier: ^0.36.0
     version: 0.36.0(rollup@4.1.4)(typescript@5.2.2)
   typescript:
-    specifier: ^5.2.2
+    specifier: ^5.0.2
     version: 5.2.2
 
 packages:
