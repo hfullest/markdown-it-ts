@@ -132,5 +132,5 @@ export const postProcess = function emphasis(state) {
       _postProcess(state, tokens_meta[curr].delimiters);
     }
   }
-  return true;
+  return true; //TODO: 确认是否正确
 } as Rule.InlineRule['fn'];

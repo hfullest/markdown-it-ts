@@ -3,7 +3,7 @@
 
 import { unescapeAll } from '../utils/utils';
 
-export default function parseLinkDestination(str:string, start, max) {
+export default function parseLinkDestination(str:string, start:number, max:number) {
   let code,
     level,
     pos = start,

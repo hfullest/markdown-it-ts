@@ -3,7 +3,7 @@ import { Nesting } from '../interface';
 export namespace Token {
   export interface Meta {}
 
-  export type Attr<K extends string = string, V = any> = [K, V];
+  export type Attr = [string, string];
 
   export type TableType =
     | 'table_open'
@@ -41,8 +41,6 @@ export namespace Token {
     | 'hr'
     | 'html_block';
 
-  export type CoreType = 'hardbreak' | 'softbreak' | 'inline';
-
   export type InlineType =
     | 'link_open'
     | 'link_close'
@@ -53,9 +51,15 @@ export namespace Token {
     | 'em_open'
     | 'strong_close'
     | 'em_close'
-    | 'text_special';
+    | 'text_special'
+    | 'html_inline'
+    | 'hardbreak'
+    | 'softbreak'
+    | 'inline'
+    | 's_open'
+    | 's_close';
 
-  export type Type<T extends string = never> = BlockType | CoreType | InlineType | T;
+  export type Type<T extends string = never> = BlockType | InlineType | T;
 }
 
 export class Token {
@@ -112,15 +116,15 @@ export class Token {
   }
 
   /** 将属性`[ name, value ]`添加到列表 */
-  attrPush<K extends string = string, V = any>(attrData: Token.Attr<K, V>) {
+  attrPush(attrData: Token.Attr) {
     this.attrs.push(attrData);
     return this;
   }
 
   /** 设置属性值，如果不存在则添加 */
-  attrSet<K extends string = string, V = any>(name: K, value: V) {
+  attrSet(name: string, value: string) {
     const idx = this.attrIndex(name);
-    const attrData: Token.Attr<K, V> = [name, value];
+    const attrData: Token.Attr = [name, value];
     if (idx < 0) {
       this.attrPush(attrData);
     } else {
@@ -140,7 +144,7 @@ export class Token {
    *
    * 对于操作类名(class)非常有用
    */
-  attrJoin<K extends string = string, V = any>(name: K, value: V) {
+  attrJoin(name: string, value: string) {
     const idx = this.attrIndex(name);
     if (idx < 0) this.attrPush([name, value]);
     else this.attrs[idx][1] += ` ${value}`;

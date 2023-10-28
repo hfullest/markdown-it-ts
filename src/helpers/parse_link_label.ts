@@ -6,7 +6,7 @@
 import { StateInline } from '../state/inline';
 
 //
-export default function parseLinkLabel(state: StateInline, start: number, disableNested: boolean) {
+export default function parseLinkLabel(state: StateInline, start: number, disableNested: boolean=false) {
   let level,
     found,
     marker,

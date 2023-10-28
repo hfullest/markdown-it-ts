@@ -154,5 +154,5 @@ export interface Plugin {
 }
 
 export interface EnvSandbox {
-  references: Record<string, { title: string; href: string }>;
+  references?: Record<string, { title: string; href: string }>;
 }

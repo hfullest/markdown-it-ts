@@ -78,7 +78,7 @@ export class MarkdownIt {
     return this;
   }
 
-  #parse(src: string, env: Record<string, any>) {
+  #parse(src: string, env: EnvSandbox) {
     if (typeof src !== 'string') {
       throw new Error('Input data should be a String');
     }

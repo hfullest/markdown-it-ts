@@ -131,5 +131,5 @@ export default (function link_pairs(state) {
       processDelimiters(tokens_meta[curr].delimiters);
     }
   }
-  return true;
+  return true; // TODO: 确认是否正确
 } as Rule.InlineRule['fn']);
