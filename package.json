@@ -3,7 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "module": "index.js",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.umd.mjs"
+   },
+   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c --watch --configPlugin typescript",

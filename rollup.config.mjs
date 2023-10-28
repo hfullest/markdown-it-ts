@@ -43,7 +43,7 @@ export default [
             format: 'cjs',
           },
           {
-            file: input.replace('src/', 'dist/').replace('.ts', '.js'),
+            file: input.replace('src/', 'dist/').replace('.ts', '.umd.js'),
             format: 'umd',
             exports: 'auto',
             name: 'MarkdownIt',
@@ -56,7 +56,7 @@ export default [
   ...entries.map((input) => ({
     input,
     output: {
-      file: input.replace('src/', 'dist').replace('.ts', '.d.ts'),
+      file: input.replace('src/', 'dist/').replace('.ts', '.d.ts'),
       format: 'esm',
     },
     external: [],
