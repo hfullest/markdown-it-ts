@@ -103,13 +103,13 @@ export interface Options {
   // and ['«\xA0', '\xA0»', '‹\xA0', '\xA0›'] for French (including nbsp).
   quotes: string;
 
-  // Highlighter function. Should return escaped HTML,
-  // or '' if the source string is not changed and should be escaped externaly.
-  // If result starts with <pre... internal wrapper is skipped.
-  //
-  // function (/*str, lang*/) { return ''; }
-  //
-  highlight: Highlighter;
+  /**
+   * Highlighter function. Should return escaped HTML,
+   * or '' if the source string is not changed and should be escaped externaly.
+   * If result starts with <pre... internal wrapper is skipped.
+   * function (str, lang) { return ''; }
+   */
+  highlight: Highlighter | null;
 
   /** @inner */
   maxNesting: number; // Internal protection, recursion limit
