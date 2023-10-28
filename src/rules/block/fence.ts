@@ -1,3 +1,4 @@
+import { Token } from '../../basic/token';
 import { Rule } from '../../interface';
 
 /** fences (``` lang, ~~~ lang) */
@@ -7,7 +8,7 @@ export default ((state, startLine, endLine, silent) => {
     params,
     nextLine,
     mem,
-    token,
+    token:Token,
     markup,
     haveEndMarker = false,
     pos = state.bMarks[startLine] + state.tShift[startLine],

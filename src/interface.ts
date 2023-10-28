@@ -1,6 +1,8 @@
 import { Token } from './basic/token';
 import { MarkdownIt } from './markdown-it';
 import { StateBlock } from './state/block';
+import { StateCore } from './state/core';
+import { StateInline } from './state/inline';
 
 export type PresetNameType = 'default' | 'commonmark' | 'zero';
 
@@ -80,7 +82,7 @@ export namespace Rule {
 
   export interface CoreRule extends BasicRule {
     name: 'normalize' | 'block' | 'inline' | 'linkify' | 'replacements' | 'smartquotes' | 'text_join';
-    fn: (state: StateBlock) => void;
+    fn: (state: StateCore) => void;
   }
 
   export interface InlineRule extends BasicRule {
@@ -97,12 +99,12 @@ export namespace Rule {
       | 'autolink'
       | 'html_inline'
       | 'entity';
-    fn: (state: StateBlock, silent: boolean) => boolean;
+    fn: (state: StateInline, silent: boolean) => boolean;
   }
 
   export interface InlineRule2 extends BasicRule {
     name: 'balance_pairs' | 'strikethrough' | 'emphasis' | 'fragments_join';
-    fn: (state: StateBlock, silent: boolean) => boolean;
+    fn: (state: StateInline, silent: boolean) => boolean;
   }
 }
 

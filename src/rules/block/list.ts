@@ -1,5 +1,6 @@
 // Search `[-+*][\n ]`, returns next pos after marker on success
 
+import { Token } from '../../basic/token';
 import { Rule } from '../../interface';
 import { StateBlock } from '../../state/block';
 import { isSpace } from '../../utils/utils';
@@ -127,7 +128,7 @@ export default ((state, startLine, endLine, silent) => {
     start,
     terminate,
     terminatorRules,
-    token,
+    token: Token,
     nextLine = startLine,
     isTerminatingParagraph = false,
     tight = true;
@@ -205,7 +206,7 @@ export default ((state, startLine, endLine, silent) => {
     token = state.push('bullet_list_open', 'ul', 1);
   }
 
-  token.map = listLines = [nextLine, 0];
+  token.map = listLines = [nextLine, 0] as [number, number];
   token.markup = String.fromCharCode(markerCharCode);
 
   //
@@ -260,7 +261,7 @@ export default ((state, startLine, endLine, silent) => {
     // Run subparser & write tokens
     token = state.push('list_item_open', 'li', 1);
     token.markup = String.fromCharCode(markerCharCode);
-    token.map = itemLines = [nextLine, 0];
+    token.map = itemLines = [nextLine, 0] as [number, number];
     if (isOrdered) {
       token.info = state.src.slice(start, posAfterMarker - 1);
     }

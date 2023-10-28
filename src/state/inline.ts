@@ -17,10 +17,23 @@ export class StateInline {
   cache = {};
 
   /** List of emphasis-like delimiters for current tag */
-  delimiters: string[] = [];
+  delimiters: {
+    /** Char code of the starting marker (number). */
+    marker: number;
+    /** Total length of these series of delimiters. */
+    length: number;
+    /** A position of the token this delimiter corresponds to. */
+    token: number;
+    /**  If this delimiter is matched as a valid opener, `end` will be equal to its position, otherwise it's `-1`. */
+    end: number;
+    /** Boolean flags that determine if this delimiter could open an emphasis. */
+    open: boolean;
+    /** Boolean flags that determine if this delimiter could close an emphasis. */
+    close: boolean;
+  }[] = [];
 
   /**  Stack of delimiter lists for upper level tags */
-  private _prev_delimiters: string[][] = [];
+  private _prev_delimiters: StateInline['delimiters'][] = [];
 
   /**  backtick length => last seen position */
   backticks = {};
@@ -32,7 +45,7 @@ export class StateInline {
    */
   linkLevel = 0;
 
-  tokens_meta: { delimiters: string[] }[] = Array(this.tokens.length);
+  tokens_meta: { delimiters: StateInline['delimiters'] }[] = Array(this.tokens.length);
   constructor(public src: string, public md: MarkdownIt, public env: EnvSandbox, public tokens: Token[]) {}
 
   /** Flush pending text */

@@ -1,3 +1,4 @@
+import { Token } from '../../basic/token';
 import { Rule } from '../../interface';
 import { StateBlock } from '../../state/block';
 import { isSpace } from '../../utils/utils';
@@ -54,7 +55,7 @@ export default ((state, startLine, endLine, silent) => {
     nextLine,
     columns,
     columnCount,
-    token,
+    token: Token,
     aligns,
     t,
     tableLines,
@@ -178,7 +179,7 @@ export default ((state, startLine, endLine, silent) => {
   terminatorRules = state.md.block.ruler.getRules('blockquote');
 
   token = state.push('table_open', 'table', 1);
-  token.map = tableLines = [startLine, 0];
+  token.map = tableLines = [startLine, 0] as [number, number];
 
   token = state.push('thead_open', 'thead', 1);
   token.map = [startLine, startLine + 1];
@@ -231,7 +232,7 @@ export default ((state, startLine, endLine, silent) => {
 
     if (nextLine === startLine + 2) {
       token = state.push('tbody_open', 'tbody', 1);
-      token.map = tbodyLines = [startLine + 2, 0];
+      token.map = tbodyLines = [startLine + 2, 0] as [number, number];
     }
 
     token = state.push('tr_open', 'tr', 1);

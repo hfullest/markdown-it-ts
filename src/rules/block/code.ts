@@ -1,8 +1,9 @@
+import { Token } from '../../basic/token';
 import { Rule } from '../../interface';
 
 /** Code block (4 spaces padded) */
 export default ((state, startLine, endLine /*, silent*/) => {
-  let nextLine, last, token;
+  let nextLine, last, token:Token;
 
   if (state.sCount[startLine] - state.blkIndent < 4) {
     return false;

@@ -1,3 +1,4 @@
+import { Token } from '../../basic/token';
 import { Rule } from '../../interface';
 
 /** lheading (---, ===) */
@@ -6,7 +7,7 @@ export default ((state, startLine, endLine /*, silent*/) => {
     terminate,
     i,
     l,
-    token,
+    token:Token,
     pos,
     max,
     level,

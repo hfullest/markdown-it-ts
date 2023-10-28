@@ -1,3 +1,4 @@
+import { Token } from '../../basic/token';
 import { Rule } from '../../interface';
 import { isSpace } from '../../utils/utils';
 
@@ -6,7 +7,7 @@ export default ((state, startLine, endLine, silent) => {
   let ch,
     level,
     tmp,
-    token,
+    token:Token,
     pos = state.bMarks[startLine] + state.tShift[startLine],
     max = state.eMarks[startLine];
 

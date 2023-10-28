@@ -41,7 +41,21 @@ export namespace Token {
     | 'hr'
     | 'html_block';
 
-  export type Type<T extends string = never> = BlockType | 'text' | 'inline' | 'image' | 'softbreak' | T;
+  export type CoreType = 'hardbreak' | 'softbreak' | 'inline';
+
+  export type InlineType =
+    | 'link_open'
+    | 'link_close'
+    | 'text'
+    | 'code_inline'
+    | 'image'
+    | 'strong_open'
+    | 'em_open'
+    | 'strong_close'
+    | 'em_close'
+    | 'text_special';
+
+  export type Type<T extends string = never> = BlockType | CoreType | InlineType | T;
 }
 
 export class Token {

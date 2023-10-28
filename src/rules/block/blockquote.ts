@@ -1,3 +1,4 @@
+import { Token } from '../../basic/token';
 import { Rule } from '../../interface';
 import { isSpace } from '../../utils/utils';
 
@@ -21,7 +22,7 @@ export default ((state, startLine, endLine, silent) => {
     spaceAfterMarker,
     terminate,
     terminatorRules,
-    token,
+    token: Token,
     isOutdented,
     oldLineMax = state.lineMax,
     pos = state.bMarks[startLine] + state.tShift[startLine],
@@ -206,7 +207,7 @@ export default ((state, startLine, endLine, silent) => {
 
   token = state.push('blockquote_open', 'blockquote', 1);
   token.markup = '>';
-  token.map = lines = [startLine, 0];
+  token.map = lines = [startLine, 0] as [number, number];
 
   state.md.block.tokenize(state, startLine, nextLine);
 
