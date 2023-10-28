@@ -15,35 +15,13 @@ export enum Nesting {
 }
 
 export namespace Rule {
-  export type CoreRuleType<T = never> = 'normalize' | 'block' | 'inline' | 'text_join' | T;
+  export type CoreRuleType<T = never> = CoreRule['name'] | T;
 
-  export type BlockRuleType<T = never> =
-    | 'blockquote'
-    | 'code'
-    | 'fence'
-    | 'heading'
-    | 'hr'
-    | 'html_block'
-    | 'lheading'
-    | 'list'
-    | 'reference'
-    | 'paragraph'
-    | T;
+  export type BlockRuleType<T = never> = BlockRule['name'] | T;
 
-  export type InlineRuleType<T = never> =
-    | 'autolink'
-    | 'backticks'
-    | 'emphasis'
-    | 'entity'
-    | 'escape'
-    | 'html_inline'
-    | 'image'
-    | 'link'
-    | 'newline'
-    | 'text'
-    | T;
+  export type InlineRuleType<T = never> = InlineRule['name'] | T;
 
-  export type InlineRule2Type<T = never> = 'balance_pairs' | 'emphasis' | 'fragments_join' | T;
+  export type InlineRule2Type<T = never> = InlineRule2['name'] | T;
 
   export type RuleType<T = never> = CoreRuleType | BlockRuleType | InlineRuleType | T;
 
@@ -140,7 +118,7 @@ export interface Options {
 export interface Components {
   core: { rules: Rule.CoreRuleType[] };
   block: { rules: Rule.BlockRuleType[] };
-  inline: { rules: Rule.InlineRuleType[]; rules2?: Rule.InlineRule2Type };
+  inline: { rules: Rule.InlineRuleType[]; rules2?: Rule.InlineRule2Type[] };
 }
 
 export interface Config {

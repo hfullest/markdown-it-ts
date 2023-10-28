@@ -46,11 +46,11 @@ export class MarkdownIt {
     } else {
       this.options = options;
     }
-    this.#configure(presetName);
+    this.configure(presetName);
   }
 
   /** 配置 */
-  #configure(presetName: PresetNameType) {
+ private configure(presetName: PresetNameType) {
     let preset: Config | null = null;
 
     if (typeof presetName === 'string') {
@@ -78,7 +78,7 @@ export class MarkdownIt {
     return this;
   }
 
-  #parse(src: string, env: EnvSandbox) {
+ private parse(src: string, env: EnvSandbox) {
     if (typeof src !== 'string') {
       throw new Error('Input data should be a String');
     }
@@ -148,7 +148,7 @@ export class MarkdownIt {
     return this;
   }
 
-  #parseInline(src: string, env: EnvSandbox) {
+  private parseInline(src: string, env: EnvSandbox) {
     const state = new this.core.State(src, this, env);
     state.inlineMode = true;
     this.core.process(state);
@@ -157,11 +157,11 @@ export class MarkdownIt {
 
   renderInline(src: string, env: EnvSandbox) {
     env = env ?? {};
-    return this.renderer.render(this.#parseInline(src, env), this.options, env);
+    return this.renderer.render(this.parseInline(src, env), this.options, env);
   }
 
   render(src: string, env?: EnvSandbox) {
     env = env ?? {};
-    return this.renderer.render(this.#parse(src, env), this.options, env);
+    return this.renderer.render(this.parse(src, env), this.options, env);
   }
 }
