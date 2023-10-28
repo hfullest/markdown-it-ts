@@ -1,5 +1,5 @@
-// import { MarkdownIt } from "./markdown-it";
+import { MarkdownIt } from "./markdown-it";
 
-// export * from "./interface";
+export * from "./interface";
 
-// export default MarkdownIt;
+export default MarkdownIt;

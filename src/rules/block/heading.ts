@@ -3,7 +3,7 @@ import { Rule } from '../../interface';
 import { isSpace } from '../../utils/utils';
 
 /** heading (#, ##, ...) */
-export default ((state, startLine, endLine, silent) => {
+export default ((state, startLine, _endLine, silent) => {
   let ch,
     level,
     tmp,

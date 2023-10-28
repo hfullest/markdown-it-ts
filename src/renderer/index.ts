@@ -1,5 +1,5 @@
 import { Token } from '../basic/token';
-import { Options, EnvSandbox, RuleType, Nesting, RuleCallback } from '../interface';
+import { Options, EnvSandbox, Nesting, Rule } from '../interface';
 import { escapeHtml } from '../utils/utils';
 
 export class Renderer {
@@ -27,7 +27,7 @@ export class Renderer {
    * }
    * ```
    */
-  rules: Partial<Record<RuleType, RuleCallback>> = {};
+  rules: Partial<Record<Rule.RuleType, Rule.BasicRule['fn']>> = {};
 
   /**
    * Renderer.renderAttrs(token) -> String
@@ -125,7 +125,7 @@ export class Renderer {
    * Don't try to use it! Spec requires to show `alt` content with stripped markup,
    * instead of simple escaping.
    **/
-  #renderInlineAsText(tokens: Token[], options: Options, env: EnvSandbox) {
+  private renderInlineAsText(tokens: Token[], options: Options, env: EnvSandbox) {
     let result = '';
     tokens?.forEach((token) => {
       switch (token.type) {
@@ -133,7 +133,7 @@ export class Renderer {
           result += token.content;
           break;
         case 'image':
-          result += this.#renderInlineAsText(token.children ?? [], options, env);
+          result += this.renderInlineAsText(token.children ?? [], options, env);
           break;
         case 'softbreak':
           result += `\n`;

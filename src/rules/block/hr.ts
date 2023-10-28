@@ -3,7 +3,7 @@ import { Rule } from '../../interface';
 import { isSpace } from '../../utils/utils';
 
 /** Horizontal rule */
-export default ((state, startLine, endLine, silent) => {
+export default ((state, startLine, _endLine, silent) => {
   let marker,
     cnt,
     ch,

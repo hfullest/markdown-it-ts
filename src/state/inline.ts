@@ -5,7 +5,7 @@ import { isMdAsciiPunct, isPunctChar, isWhiteSpace } from '../utils/utils';
 
 export class StateInline {
   pos = 0;
-  posMax = this.src.length;
+  posMax = 0;
   level = 0;
   pending = '';
   pendingLevel = 0;
@@ -45,8 +45,11 @@ export class StateInline {
    */
   linkLevel = 0;
 
-  tokens_meta: { delimiters: StateInline['delimiters'] }[] = Array(this.tokens.length);
-  constructor(public src: string, public md: MarkdownIt, public env: EnvSandbox, public tokens: Token[]) {}
+  tokens_meta: { delimiters: StateInline['delimiters'] }[] = [];
+  constructor(public src: string, public md: MarkdownIt, public env: EnvSandbox, public tokens: Token[]) {
+    this.posMax = this.src.length;
+    this.tokens_meta=Array(this.tokens.length);
+  }
 
   /** Flush pending text */
   pushPending() {

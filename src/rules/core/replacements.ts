@@ -29,7 +29,7 @@ const SCOPED_ABBR = {
   tm: '™',
 };
 
-function replaceFn(match, name) {
+function replaceFn(_match, name) {
   return SCOPED_ABBR[name.toLowerCase()];
 }
 
