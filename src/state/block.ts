@@ -50,10 +50,10 @@ export class StateBlock {
 
   readonly Token = Token;
   constructor(public src: string, public md: MarkdownIt, public env: EnvSandbox, public tokens: Token[]) {
-    this.#genMarkers();
+    this.genMarkers();
   }
 
-  #genMarkers() {
+ private genMarkers() {
     let ch, s, start, pos, len, indent, offset, indent_found;
     // Create caches
     // Generate markers.
@@ -181,7 +181,7 @@ export class StateBlock {
   }
 
   /** cut lines range from source. */
-  getLines(begin: number, end: number, indent: number, keepLastLF: boolean) {
+  getLines(begin: number, end: number, indent: number, keepLastLF: boolean):string {
     let i,
       lineIndent,
       ch,
