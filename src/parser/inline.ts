@@ -1,16 +1,51 @@
 import { EnvSandbox, Rule } from '../interface';
 import { Ruler } from '../rules/ruler';
 import { StateInline } from '../state/inline';
-import text from '../rules/inline/text';
 import { MarkdownIt } from '../markdown-it';
 import { Token } from '../basic/token';
+import text from '../rules/inline/text';
+import linkify from '../rules/inline/linkify';
+import newline from '../rules/inline/newline';
+import escape from '../rules/inline/escape';
+import backticks from '../rules/inline/backticks';
+import * as strikethrough from '../rules/inline/strikethrough';
+import * as emphasis from '../rules/inline/emphasis';
+import link from '../rules/inline/link';
+import image from '../rules/inline/image';
+import autolink from '../rules/inline/autolink';
+import html_inline from '../rules/inline/html_inline';
+import entity from '../rules/inline/entity';
+import balance_pairs from '../rules/inline/balance_pairs';
+import fragments_join from '../rules/inline/fragments_join';
+
 export class ParserInline {
   ruler = new Ruler<Rule.InlineRule>([
     { name: 'text', fn: text, enabled: true },
-    { name: 'linkify', fn: text, enabled: true },
+    { name: 'linkify', fn: linkify, enabled: true },
+    { name: 'newline', fn: newline, enabled: true },
+    { name: 'escape', fn: escape, enabled: true },
+    { name: 'backticks', fn: backticks, enabled: true },
+    { name: 'strikethrough', fn: strikethrough.tokenize, enabled: true },
+    { name: 'emphasis', fn: emphasis.tokenize, enabled: true },
+    { name: 'link', fn: link, enabled: true },
+    { name: 'image', fn: image, enabled: true },
+    { name: 'autolink', fn: autolink, enabled: true },
+    { name: 'html_inline', fn: html_inline, enabled: true },
+    { name: 'entity', fn: entity, enabled: true },
   ]);
 
-  ruler2 = new Ruler<Rule.InlineRule2>();
+  /**
+   * `rule2` ruleset was created specifically for emphasis/strikethrough
+   * post-processing and may be changed in the future.
+   *
+   * Don't use this for anything except pairs (plugins working with `balance_pairs`).
+   */
+  ruler2 = new Ruler<Rule.InlineRule2>([
+    { name: 'balance_pairs', fn: balance_pairs, enabled: true },
+    { name: 'strikethrough', fn: strikethrough.postProcess, enabled: true },
+    { name: 'emphasis', fn: emphasis.postProcess, enabled: true },
+    { name: 'fragments_join', fn: fragments_join, enabled: true },
+  ]);
 
   State = StateInline;
 
