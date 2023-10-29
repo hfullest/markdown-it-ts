@@ -1,5 +1,5 @@
 import { Token } from '../../basic/token';
-import { Rule } from '../../interface';
+import { Nesting, Rule } from '../../interface';
 import { isSpace } from '../../utils/utils';
 
 /** heading (#, ##, ...) */
@@ -48,7 +48,7 @@ export default ((state, startLine, _endLine, silent) => {
 
   state.line = startLine + 1;
 
-  token = state.push('heading_open', 'h' + String(level), 1);
+  token = state.push('heading_open', 'h' + String(level), Nesting.opening);
   token.markup = '########'.slice(0, level);
   token.map = [startLine, state.line];
 
@@ -57,7 +57,7 @@ export default ((state, startLine, _endLine, silent) => {
   token.map = [startLine, state.line];
   token.children = [];
 
-  token = state.push('heading_close', 'h' + String(level), -1);
+  token = state.push('heading_close', 'h' + String(level),Nesting.closing);
   token.markup = '########'.slice(0, level);
 
   return true;

@@ -38,5 +38,4 @@ export default (function fragments_join(state) {
   if (curr !== last) {
     tokens.length = last;
   }
-  return true; // TODO: 确认是否正确
-} as Rule.InlineRule['fn']);
+} as Rule.InlineRule2['fn']);

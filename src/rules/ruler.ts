@@ -1,6 +1,6 @@
 import { Rule } from '../interface';
 
-export class Ruler<R extends Rule.BasicRule = Rule.RenderRule> {
+export class Ruler<R extends Rule.BasicRule = Rule.BasicRule> {
   /** 添加的规则列表 */
  private rules: R[] = [];
 

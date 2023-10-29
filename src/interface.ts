@@ -1,12 +1,17 @@
 import { Token } from './basic/token';
 import { MarkdownIt } from './markdown-it';
+import { Renderer } from './renderer';
 import { StateBlock } from './state/block';
 import { StateCore } from './state/core';
 import { StateInline } from './state/inline';
 
 export type PresetNameType = 'default' | 'commonmark' | 'zero';
 
-export type Highlighter = (str: string, lang: string) => string;
+export type Highlighter = (
+  str: string,
+  lang: string,
+  attrs?: string /** 应该没有该属性，但是代码有地方有三个参数，做类型兼容 */
+) => string;
 
 export enum Nesting {
   opening = 1,
@@ -32,13 +37,23 @@ export namespace Rule {
     alt?: string[];
   }
 
-  export interface RenderRule extends BasicRule {
-    fn: <This = any>(
+  export interface RenderRule {
+    name:
+      | 'code_inline'
+      | 'code_block'
+      | 'fence'
+      | 'image'
+      | 'hardbreak'
+      | 'softbreak'
+      | 'text'
+      | 'html_block'
+      | 'html_inline';
+    fn: <This extends typeof Renderer = typeof Renderer>(
       tokens: Token[],
       idx: number,
       options: Options,
       env: EnvSandbox,
-      slf: ThisParameterType<This>
+      slf: InstanceType<This>
     ) => string;
   }
 
@@ -82,7 +97,7 @@ export namespace Rule {
 
   export interface InlineRule2 extends BasicRule {
     name: 'balance_pairs' | 'strikethrough' | 'emphasis' | 'fragments_join';
-    fn: (state: StateInline, silent: boolean) => boolean;
+    fn: (state: StateInline, silent: boolean) => void;
   }
 }
 

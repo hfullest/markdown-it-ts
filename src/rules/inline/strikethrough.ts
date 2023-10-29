@@ -123,7 +123,7 @@ function _postProcess(state: StateInline, delimiters: StateInline['delimiters'])
 }
 
 /** Walk through delimiter list and replace text tokens with tags */
-export const postProcess: Rule.InlineRule['fn'] = function strikethrough(state) {
+export const postProcess: Rule.InlineRule2['fn'] = function strikethrough(state) {
   let curr,
     tokens_meta = state.tokens_meta,
     max = state.tokens_meta.length;
@@ -135,5 +135,4 @@ export const postProcess: Rule.InlineRule['fn'] = function strikethrough(state) 
       _postProcess(state, tokens_meta[curr].delimiters);
     }
   }
-  return true; //TODO: 待确认正确
 };

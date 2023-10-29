@@ -4,7 +4,7 @@
 import { Rule } from '../../interface';
 import { StateInline } from '../../state/inline';
 
-function processDelimiters(delimiters:StateInline['delimiters']) {
+function processDelimiters(delimiters: StateInline['delimiters']) {
   let closerIdx,
     openerIdx,
     closer,
@@ -21,7 +21,7 @@ function processDelimiters(delimiters:StateInline['delimiters']) {
   // headerIdx is the first delimiter of the current (where closer is) delimiter run
   let headerIdx = 0;
   let lastTokenIdx = -2; // needs any value lower than -1
-  let jumps:number[] = [];
+  let jumps: number[] = [];
 
   for (closerIdx = 0; closerIdx < max; closerIdx++) {
     closer = delimiters[closerIdx];
@@ -131,5 +131,4 @@ export default (function link_pairs(state) {
       processDelimiters(tokens_meta[curr].delimiters);
     }
   }
-  return true; // TODO: 确认是否正确
-} as Rule.InlineRule['fn']);
+} as Rule.InlineRule2['fn']);

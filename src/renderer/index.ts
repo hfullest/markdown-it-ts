@@ -1,8 +1,17 @@
 import { Token } from '../basic/token';
 import { Options, EnvSandbox, Nesting, Rule } from '../interface';
 import { escapeHtml } from '../utils/utils';
+import code_block from './rules/code_block';
+import code_inline from './rules/code_inline';
+import fence from './rules/fence';
+import hardbreak from './rules/hardbreak';
+import html_block from './rules/html_block';
+import html_inline from './rules/html_inline';
+import image from './rules/image';
+import softbreak from './rules/softbreak';
+import text from './rules/text';
 
-export class Renderer {
+export class Renderer<ExtendedRuleType extends string = never> {
   /**
    *
    * Contains render rules for tokens. Can be updated and extended.
@@ -27,7 +36,17 @@ export class Renderer {
    * }
    * ```
    */
-  rules: Partial<Record<Rule.RuleType, Rule.BasicRule['fn']>> = {};
+  rules = {
+    code_inline: code_inline,
+    code_block: code_block,
+    fence: fence,
+    hardbreak: hardbreak,
+    html_block: html_block,
+    html_inline: html_inline,
+    image: image,
+    softbreak: softbreak,
+    text: text,
+  } as Partial<Record<Rule.RenderRule['name'] | ExtendedRuleType, Rule.RenderRule['fn']>>;
 
   /**
    * Renderer.renderAttrs(token) -> String
@@ -125,7 +144,7 @@ export class Renderer {
    * Don't try to use it! Spec requires to show `alt` content with stripped markup,
    * instead of simple escaping.
    **/
-  private renderInlineAsText(tokens: Token[], options: Options, env: EnvSandbox) {
+  renderInlineAsText(tokens: Token[], options: Options, env: EnvSandbox) {
     let result = '';
     tokens?.forEach((token) => {
       switch (token.type) {
