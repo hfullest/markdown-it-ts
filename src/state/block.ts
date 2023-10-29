@@ -53,7 +53,7 @@ export class StateBlock {
     this.genMarkers();
   }
 
- private genMarkers() {
+  private genMarkers() {
     let ch, s, start, pos, len, indent, offset, indent_found;
     // Create caches
     // Generate markers.
@@ -106,8 +106,8 @@ export class StateBlock {
   }
 
   /** Push new token to "stream". */
-  push(type: Token.Type, tag: string, nesting: Nesting) {
-    const token = new Token(type, tag, nesting);
+  push<ExtendTokenType extends string = string>(type: Token.Type<ExtendTokenType>, tag: string, nesting: Nesting) {
+    const token = new Token<ExtendTokenType>(type, tag, nesting);
     token.block = true;
 
     if (nesting === Nesting.closing) this.level--; // closing tag
@@ -181,7 +181,7 @@ export class StateBlock {
   }
 
   /** cut lines range from source. */
-  getLines(begin: number, end: number, indent: number, keepLastLF: boolean):string {
+  getLines(begin: number, end: number, indent: number, keepLastLF: boolean): string {
     let i,
       lineIndent,
       ch,

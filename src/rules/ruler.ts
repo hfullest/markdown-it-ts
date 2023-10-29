@@ -2,7 +2,7 @@ import { Rule } from '../interface';
 
 export class Ruler<R extends Rule.BasicRule = Rule.BasicRule> {
   /** 添加的规则列表 */
- private rules: R[] = [];
+  private rules: R[] = [];
 
   /**
    * Cached rule chains.
@@ -11,14 +11,14 @@ export class Ruler<R extends Rule.BasicRule = Rule.BasicRule> {
    *
    *  Second level - diginal anchor for fast filtering by charcodes.
    */
- private cache: Map<string, Function[]> = new Map();
+  private cache: Map<string, Function[]> = new Map();
 
   constructor(rules?: R[]) {
     this.rules.push(...(rules ?? []));
   }
 
   /** 构建规则查找缓存 */
- private compile() {
+  private compile() {
     const chains = new Set(['']);
     this.rules.forEach((rule) => {
       if (!rule.enabled) return;
@@ -50,7 +50,11 @@ export class Ruler<R extends Rule.BasicRule = Rule.BasicRule> {
    * });
    * ```
    */
-  at(beforeName: string, fn: R['fn'], options: { alt?: R['alt'] } = {}) {
+  at<ExtendedBeforeRuleType extends string = string>(
+    beforeName: R['name'] | ExtendedBeforeRuleType,
+    fn: R['fn'],
+    options: { alt?: R['alt'] } = {}
+  ) {
     const index = this.rules.findIndex((rule) => rule.name === beforeName);
     if (index < 0) throw new Error('Parser rule not found: ' + beforeName);
     this.rules[index].fn = fn;
@@ -82,7 +86,12 @@ export class Ruler<R extends Rule.BasicRule = Rule.BasicRule> {
    * });
    * ```
    **/
-  before(beforeName: string, ruleName: string, fn: R['fn'], options: { alt?: R['alt'] } = {}) {
+  before<ExtendedBeforeRuleType extends string = string, ExtendedRuleType extends string = string>(
+    beforeName: R['name'] | ExtendedBeforeRuleType,
+    ruleName: R['name'] | ExtendedRuleType,
+    fn: R['fn'],
+    options: { alt?: R['alt'] } = {}
+  ) {
     const index = this.rules.findIndex((rule) => rule.name === beforeName);
     if (index < 0) throw new Error('Parser rule not found: ' + beforeName);
     const rule = { name: ruleName, enabled: true, fn, alt: options?.alt ?? [] };
@@ -114,7 +123,12 @@ export class Ruler<R extends Rule.BasicRule = Rule.BasicRule> {
    * });
    * ```
    **/
-  after(afterName: string, ruleName: string, fn: R['fn'], options: { alt?: R['alt'] } = {}) {
+  after<ExtendedAfterRuleType extends string = string, ExtendedRuleType extends string = string>(
+    afterName: R['name'] | ExtendedAfterRuleType,
+    ruleName: R['name'] | ExtendedRuleType,
+    fn: R['fn'],
+    options: { alt?: R['alt'] } = {}
+  ) {
     const index = this.rules.findIndex((rule) => rule.name === afterName);
     if (index < 0) throw new Error('Parser rule not found: ' + afterName);
     const rule = { name: ruleName, enabled: true, fn, alt: options?.alt ?? [] };
@@ -145,7 +159,11 @@ export class Ruler<R extends Rule.BasicRule = Rule.BasicRule> {
    * });
    * ```
    **/
-  push(ruleName: string, fn: R['fn'], options: { alt?: R['alt'] } = {}) {
+  push<ExtendedRuleType extends string = string>(
+    ruleName: R['name'] | ExtendedRuleType,
+    fn: R['fn'],
+    options: { alt?: R['alt'] } = {}
+  ) {
     this.rules.push({ name: ruleName, enabled: true, fn, alt: options?.alt ?? [] } as R);
     this.cache.clear();
   }

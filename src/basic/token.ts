@@ -62,7 +62,7 @@ export namespace Token {
   export type Type<T extends string = never> = BlockType | InlineType | T;
 }
 
-export class Token {
+export class Token<ExtendType extends string = string> {
   /** html 属性 */
   attrs: Token.Attr[] = [];
 
@@ -73,7 +73,7 @@ export class Token {
   level: number = 0;
 
   /** 子节点 */
-  children: Token[] | null = null;
+  children: Token<ExtendType>[] | null = null;
 
   /** 只有在自闭合标签的情况下，这个属性才有值 */
   content: string = '';
@@ -108,7 +108,7 @@ export class Token {
    */
   hidden: boolean = false;
 
-  constructor(public type: Token.Type, public tag: string, public nesting: Nesting) {}
+  constructor(public type: Token.Type | ExtendType, public tag: string, public nesting: Nesting) {}
 
   /** 通过属性名搜索索引 */
   attrIndex(name: string): number {
