@@ -20,7 +20,7 @@ export interface MarkdownImportOptions {
 }
 
 /**
- * 支持在markdown中使用一下语法
+ * 支持在markdown中使用以下语法
  *
  * `@import:identifier {alias}/path/file.tsx?param1=abc`
  *
